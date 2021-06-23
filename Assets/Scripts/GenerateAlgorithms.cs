@@ -8,14 +8,24 @@ public static class GenerateAlgorithms
         
         var rand = new System.Random();
 
-        for (int i = 0; i < rows; ++i)
-        for (int j = 0; j < columns; ++j)
+        for (int i = rows - 1; i >= 0; --i)
+        for (int j = columns - 1; j >= 0; --j)
         {
             maze[i, j] = new Cell();
             if (rand.Next() % 2 == 0)
-                maze[i, j].Left = false;
+            {
+                if (j == 0)
+                    maze[i, j].Up = false;
+                else
+                    maze[i, j].Left = false;
+            }
             else
-                maze[i, j].Up = false;
+            {
+                if (i == (rows-1))
+                    maze[i, j].Left = false;
+                else
+                    maze[i, j].Up = false;
+            }
         }
         
         

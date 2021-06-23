@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Unity.UI
 public class GameManager : MonoBehaviour
 {
 
@@ -14,7 +13,8 @@ public class GameManager : MonoBehaviour
     private float fullSizeX;
     private float fullSizeY;
     private float scaleMaze;
-    void Start()
+
+    private void Start()
     {
         fullSizeX =  0.96f * columns +  0.16f * (columns + 1);
         fullSizeY = 0.96f * rows + 0.16f * (rows + 1);
@@ -24,8 +24,11 @@ public class GameManager : MonoBehaviour
             scaleMaze = Screen.width / fullSizeX;
         else
             scaleMaze = Screen.height / fullSizeY;
-        
-        this.transform.position = new Vector3(fullSizeX / 2 * scaleMaze-(0.96f/2+0.16f)* scaleMaze, fullSizeY / 2*scaleMaze-(0.96f/2+0.16f)* scaleMaze,-1);
+
+        this.transform.position = new Vector3(
+            (fullSizeX / 2 - (0.96f / 2 + 0.16f)) * scaleMaze,
+            (fullSizeY / 2 - (0.96f / 2 + 0.16f)) * scaleMaze,
+            -1);
         
         
         layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
@@ -36,18 +39,39 @@ public class GameManager : MonoBehaviour
         
     }
 
-    void DrawMaze()
+    private void DrawMaze()
     {
-        int i;
-        int j;
-        
-        for (i = 0; i < rows; i++)
-        for (j = 0; j < columns; j++)
+        for (int i = 0; i < rows; i++)
+        for (int j = 0; j < columns; j++)
         {
-            var temp = Instantiate(cellPrefab, new Vector3((float)1.12 * i*scaleMaze, (float)1.12 * j*scaleMaze, 0),Quaternion.identity);
-            temp.transform.localScale=new Vector3(scaleMaze, scaleMaze, 1);
-        }
-        var objectsForLook = GameObject.FindGameObjectsWithTag("Cell");
+            var temp = Instantiate(
+                cellPrefab,
+                new Vector3(
+                    (float) 1.12 * j * scaleMaze, 
+                    (float) 1.12 * i * scaleMaze, 
+                    0),
+                Quaternion.identity);
 
+            temp.transform.localScale = new Vector3(scaleMaze, scaleMaze, 1);
+            
+            var childsTransforms = temp.GetComponentsInChildren<Transform>();
+            foreach (var child in childsTransforms)
+            {
+                removeWalls(child.gameObject,i,j);
+            }
+        }
+
+    }
+
+    private void removeWalls(GameObject temp, int row, int column)
+    {
+        if (temp.CompareTag($"RightWall") && column!=(columns-1))
+            temp.GetComponent<SpriteRenderer>().enabled = false;
+        if (temp.CompareTag($"DownWall") && row != 0)
+            temp.GetComponent<SpriteRenderer>().enabled = false;
+        if (layout[row, column].Left == false && temp.CompareTag($"LeftWall") && column != 0)
+            temp.GetComponent<SpriteRenderer>().enabled = false;
+        if (layout[row, column].Up == false && temp.CompareTag($"UpWall") && row != (rows - 1))
+            temp.GetComponent<SpriteRenderer>().enabled = false;
     }
 }
