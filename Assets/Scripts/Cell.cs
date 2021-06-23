@@ -1,14 +1,11 @@
 public class Cell
 {
-   private bool Up
+   public bool Up;
+   public bool Left;
+
+   public Cell()
    {
-      get;
-      set;
+      Up = true;
+      Left = true;
    }
-   private bool Left
-   {
-      get;
-      set;
-   }
-   
 }
