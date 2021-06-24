@@ -56,7 +56,7 @@ public class GenerateMazeButton : MonoBehaviour
         switch (algorithmChoose.value)
         {
             case 0:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                layout = GenerateAlgorithms.AlgorithmRecursiveBacktracker(rows, columns);
                 break;
             case 1:
                 layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
