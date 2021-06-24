@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cell
+  - RightWall
+  - Floor
+  - LeftWall
+  - UpWall
+  - DownWall
+  - Canvas
   layers:
   - Default
   - TransparentFX
