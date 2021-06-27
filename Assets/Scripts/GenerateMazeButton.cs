@@ -59,7 +59,7 @@ public class GenerateMazeButton : MonoBehaviour
                 layout = GenerateAlgorithms.AlgorithmRecursiveBacktracker(rows, columns);
                 break;
             case 1:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                layout = GenerateAlgorithms.AlgorithmKruskal(rows, columns);
                 break;
             case 2:
                 layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
@@ -71,10 +71,10 @@ public class GenerateMazeButton : MonoBehaviour
                 layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 5:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                layout = GenerateAlgorithms.AlgorithmAldousBroder(rows, columns);
                 break;
             case 6:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                layout = GenerateAlgorithms.AlgorithmWilson(rows, columns);
                 break;
             case 7:
                 layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
@@ -95,7 +95,7 @@ public class GenerateMazeButton : MonoBehaviour
                 layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 13:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                layout = GenerateAlgorithms.AlgorithmSidewinder(rows, columns);
                 break;
         }
 
