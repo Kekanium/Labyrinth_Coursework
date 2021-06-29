@@ -41,10 +41,10 @@ public class GenerateMazeButton : MonoBehaviour
         float heightCamera = max.y - min.y;
         float widthCamera = max.x - min.x;
 
-          if (fullSizeY < fullSizeX)
-              scaleMaze = widthCamera / fullSizeX;
-          else
-              scaleMaze = heightCamera / fullSizeY;
+        if (fullSizeX > fullSizeY)
+            scaleMaze = heightCamera / fullSizeX;
+        else
+            scaleMaze = heightCamera / fullSizeY;
 
 
         _mainCamera.transform.position = new Vector3(
@@ -106,25 +106,25 @@ public class GenerateMazeButton : MonoBehaviour
     private void DrawMaze(int rows, int columns, float scaleMaze)
     {
         for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++)
+        for (int j = 0; j < columns; j++)
+        {
+            var temp = Instantiate(
+                cellPrefab,
+                new Vector3(
+                    (float) 1.12 * j * scaleMaze,
+                    (float) 1.12 * i * scaleMaze,
+                    0),
+                Quaternion.identity);
+
+
+            temp.transform.localScale = new Vector3(scaleMaze, scaleMaze, 1);
+
+            var childsTransforms = temp.GetComponentsInChildren<Transform>();
+            foreach (var child in childsTransforms)
             {
-                var temp = Instantiate(
-                    cellPrefab,
-                    new Vector3(
-                        (float) 1.12 * j * scaleMaze,
-                        (float) 1.12 * i * scaleMaze,
-                        0),
-                    Quaternion.identity);
-    
-    
-                temp.transform.localScale = new Vector3(scaleMaze, scaleMaze, 1);
-    
-                var childsTransforms = temp.GetComponentsInChildren<Transform>();
-                foreach (var child in childsTransforms)
-                {
-                    RemoveWalls(child.gameObject, i, j, rows, columns);
-                }
+                RemoveWalls(child.gameObject, i, j, rows, columns);
             }
+        }
     }
 
     private void RemoveWalls(GameObject temp, int row, int column, int rows, int columns)
