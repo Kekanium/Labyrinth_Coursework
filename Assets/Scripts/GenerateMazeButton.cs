@@ -39,12 +39,12 @@ public class GenerateMazeButton : MonoBehaviour
         Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0)); // bottom-left corner
         Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1)); // top-right corner
         float heightCamera = max.y - min.y;
-        float widthCamera = max.y - min.y;
-
-        if (heightCamera > widthCamera)
-            scaleMaze = widthCamera / fullSizeX;
-        else
-            scaleMaze = heightCamera / fullSizeY;
+        float widthCamera = max.x - min.x;
+        
+          if (fullSizeY < fullSizeX)
+              scaleMaze = widthCamera / fullSizeX;
+          else
+              scaleMaze = heightCamera / fullSizeY;
 
         _mainCamera.transform.position = new Vector3(
             (fullSizeX / 2 - (0.96f / 2 + 0.16f)) * scaleMaze,
