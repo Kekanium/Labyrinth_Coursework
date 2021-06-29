@@ -465,6 +465,109 @@ public static class GenerateAlgorithms
         return avstraliezStas;
     }
 
+    public static Cell[,] AlgorithmHuntKill(int rows, int columns)
+    {
+        Cell[,] maze = new Cell[rows, columns];
+        
+        for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < columns; ++j)
+            maze[i, j] = new Cell();
+        
+        //array of cell; 1 - cell in labyrinth; 0 - not in labyrinth
+        int[,] arrayOfCell = new int[rows, columns];
+        
+        var rand = new Random();
+        int indRows = rand.Next() % rows, indColumns = rand.Next() % columns;
+        arrayOfCell[indRows, indColumns] = 1;
+
+        //cells that we not view
+        int unviewedCells = rows * columns - 1;
+        
+        //array of possible ways
+        int[] ways = new int[4];
+
+        while (unviewedCells != 0)
+        {
+            int length = 0;
+            if ((indColumns - 1 >= 0) && (arrayOfCell[indRows, indColumns - 1] != 1))
+            {
+                ways[length] = 0;
+                ++length;
+            }
+            if ((indRows - 1 >= 0) && (arrayOfCell[indRows - 1, indColumns] != 1))
+            {
+                ways[length] = 1;
+                ++length;
+            }
+            if ((indColumns + 1 < columns) && (arrayOfCell[indRows, indColumns + 1] != 1))
+            {
+                ways[length] = 2;
+                ++length;
+            }
+            if ((indRows + 1 < rows) && (arrayOfCell[indRows + 1, indColumns] != 1))
+            {
+                ways[length] = 3;
+                ++length;
+            }
+            
+            if (length == 0)
+            {
+                indRows = rand.Next() % rows;
+                indColumns = rand.Next() % columns;
+                while (arrayOfCell[indRows, indColumns] != 1)
+                {
+                    indRows = rand.Next() % rows;
+                    indColumns = rand.Next() % columns;
+                }
+            }
+            else
+            {
+                int way;
+                way = ways[rand.Next() % length];
+                
+                if (way == 0)
+                {
+                    maze[indRows, indColumns].Left = false;
+                    arrayOfCell[indRows, indColumns - 1] = 1;
+                    --unviewedCells;
+                    --indColumns;
+                }
+                else if (way == 2)
+                {
+                    maze[indRows, indColumns + 1].Left = false;
+                    arrayOfCell[indRows, indColumns + 1] = 1;
+                    --unviewedCells;
+                    ++indColumns;;
+                }
+                else if (way == 1)
+                {
+                    maze[indRows, indColumns].Up = false;
+                    arrayOfCell[indRows - 1, indColumns] = 1;
+                    --unviewedCells;
+                    --indRows;
+                }
+                else if (way == 3)
+                {
+                    maze[indRows + 1, indColumns].Up = false;
+                    arrayOfCell[indRows + 1, indColumns] = 1;
+                    --unviewedCells;
+                    ++indRows;
+                }
+            }
+        }
+
+        Cell[,] avstraliezStas = new Cell[rows, columns];
+        for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < columns; ++j)
+        {
+            avstraliezStas[i, j] = new Cell();
+            avstraliezStas[i, j].Left = maze[rows - i - 1, j].Left;
+            avstraliezStas[i, j].Up = maze[rows - i - 1, j].Up;
+        }
+
+        return avstraliezStas;
+    }
+
     public static Cell[,] AlgorithmBinaryTrees(int rows, int columns)
     {
         Cell[,] maze = new Cell[rows, columns];
