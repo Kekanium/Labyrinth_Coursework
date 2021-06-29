@@ -20,7 +20,7 @@ public static class GenerateAlgorithms
         //track add cell to the stack or not; 1 - yes; 0 - no
         int[,] arrayOfStack = new int[rows, columns];
 
-        var rand = new System.Random();
+        var rand = new Random();
 
         do
         {
@@ -192,7 +192,7 @@ public static class GenerateAlgorithms
             }
         }
         
-        var rand = new System.Random();
+        var rand = new Random();
 
         //number of untreated edges
         int countEdges = edges.Count;
@@ -249,7 +249,7 @@ public static class GenerateAlgorithms
         //array of cell; 1 - there is way; 0 - there is not way
         int[,] arrayOfCell = new int[rows, columns];
 
-        var rand = new System.Random();
+        var rand = new Random();
         int indRows = rand.Next() % rows, indColumns = rand.Next() % columns;
         arrayOfCell[indRows, indColumns] = 1;
 
@@ -349,7 +349,7 @@ public static class GenerateAlgorithms
         //array of cell; 1 - current way; 0 - not considering; 2 - part of the labyrinth
         int[,] arrayOfCell = new int[rows, columns];
 
-        var rand = new System.Random();
+        var rand = new Random();
         int indRows = rand.Next() % rows, indColumns = rand.Next() % columns;
         arrayOfCell[indRows, indColumns] = 2;
         
@@ -469,7 +469,7 @@ public static class GenerateAlgorithms
     {
         Cell[,] maze = new Cell[rows, columns];
 
-        var rand = new System.Random();
+        var rand = new Random();
 
         for (int i = rows - 1; i >= 0; --i)
         for (int j = columns - 1; j >= 0; --j)
@@ -506,7 +506,7 @@ public static class GenerateAlgorithms
         for (int i = 1; i < columns; ++i)
             maze[0, i].Left = false;
         
-        var rand = new System.Random();
+        var rand = new Random();
         
         for (int i = 1; i < rows; ++i)
         {

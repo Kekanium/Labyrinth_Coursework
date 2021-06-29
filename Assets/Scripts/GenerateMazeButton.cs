@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,14 +9,14 @@ public class GenerateMazeButton : MonoBehaviour
     public Dropdown algorithmChoose;
     public Canvas mainCanvas;
     public GameObject cellPrefab;
-    private Cell[,] layout;
+    private Cell[,] _layout;
 
-    private GameObject MainCamera;
+    private GameObject _mainCamera;
 
 
     private void Awake()
     {
-        MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     public void Generate()
@@ -47,7 +46,7 @@ public class GenerateMazeButton : MonoBehaviour
         else
             scaleMaze = heightCamera / fullSizeY;
 
-        MainCamera.transform.position = new Vector3(
+        _mainCamera.transform.position = new Vector3(
             (fullSizeX / 2 - (0.96f / 2 + 0.16f)) * scaleMaze,
             (fullSizeY / 2 - (0.96f / 2 + 0.16f)) * scaleMaze,
             -1);
@@ -56,46 +55,46 @@ public class GenerateMazeButton : MonoBehaviour
         switch (algorithmChoose.value)
         {
             case 0:
-                layout = GenerateAlgorithms.AlgorithmRecursiveBacktracker(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmRecursiveBacktracker(rows, columns);
                 break;
             case 1:
-                layout = GenerateAlgorithms.AlgorithmKruskal(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmKruskal(rows, columns);
                 break;
             case 2:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 3:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 4:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 5:
-                layout = GenerateAlgorithms.AlgorithmAldousBroder(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmAldousBroder(rows, columns);
                 break;
             case 6:
-                layout = GenerateAlgorithms.AlgorithmWilson(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmWilson(rows, columns);
                 break;
             case 7:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 8:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 9:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 10:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 11:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 12:
-                layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
                 break;
             case 13:
-                layout = GenerateAlgorithms.AlgorithmSidewinder(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmSidewinder(rows, columns);
                 break;
         }
 
@@ -141,9 +140,9 @@ public class GenerateMazeButton : MonoBehaviour
             temp.GetComponent<SpriteRenderer>().enabled = false;
         if (temp.CompareTag($"DownWall") && row != 0)
             temp.GetComponent<SpriteRenderer>().enabled = false;
-        if (layout[row, column].Left == false && temp.CompareTag($"LeftWall") && column != 0)
+        if (_layout[row, column].Left == false && temp.CompareTag($"LeftWall") && column != 0)
             temp.GetComponent<SpriteRenderer>().enabled = false;
-        if (layout[row, column].Up == false && temp.CompareTag($"UpWall") && row != (rows - 1))
+        if (_layout[row, column].Up == false && temp.CompareTag($"UpWall") && row != (rows - 1))
             temp.GetComponent<SpriteRenderer>().enabled = false;
     }
 }
