@@ -839,6 +839,93 @@ public static class GenerateAlgorithms
         return avstraliezStas;
     }
 
+    public static Cell[,] AlgorithmEller(int rows, int columns)
+    {
+        Cell[,] maze = new Cell[rows, columns];
+
+        for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < columns; ++j)
+            maze[i, j] = new Cell();
+        
+        //array of cell with unique identifier (set)
+        int[,] arrayOfCell = new int[rows, columns];
+        
+        int identifier = 0;
+        for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < columns; ++j)
+        {
+            arrayOfCell[i, j] = identifier;
+            ++identifier;
+        }
+
+        var rand = new Random();
+        for (int i = rows - 1; i > 0; --i)
+        {
+            for (int j = 1; j < columns; ++j)
+            {
+                int randWay = rand.Next() % 2;
+                if ((randWay == 0) && (arrayOfCell[i, j] != arrayOfCell[i, j - 1]))
+                {
+                    maze[i, j].Left = false;
+                    arrayOfCell[i, j] = arrayOfCell[i, j - 1];
+                }
+            }
+
+            bool flagWay = false;
+            int countOfSet = 0, numSet = arrayOfCell[i, 0];
+            for (int j = 0; j < columns; ++j)
+            {
+                if (arrayOfCell[i, j] != numSet)
+                {
+                    numSet = arrayOfCell[i, j];
+                    if ((countOfSet == 1) || (flagWay == false))
+                    {
+                        maze[i, j - 1].Up = false;
+                        arrayOfCell[i - 1, j - 1] = arrayOfCell[i, j - 1];
+                    }
+
+                    flagWay = false;
+                    countOfSet = 0;
+                }
+                ++countOfSet;
+                
+                int randWay = rand.Next() % 2;
+                if (randWay == 0)
+                {
+                    flagWay = true;
+                    maze[i, j].Up = false;
+                    arrayOfCell[i - 1, j] = arrayOfCell[i, j];
+                }
+            }
+
+            if (flagWay == false)
+            {
+                maze[i, columns - 1].Up = false;
+                arrayOfCell[i - 1, columns - 1] = arrayOfCell[i, columns - 1];
+            }
+        }
+
+        for (int j = 0; j < (columns - 1); ++j)
+        {
+            if (arrayOfCell[0, j] != arrayOfCell[0, j + 1])
+            {
+                arrayOfCell[0, j + 1] = arrayOfCell[0, j];
+                maze[0, j + 1].Left = false;
+            }
+        }
+
+        Cell[,] avstraliezStas = new Cell[rows, columns];
+        for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < columns; ++j)
+        {
+            avstraliezStas[i, j] = new Cell();
+            avstraliezStas[i, j].Left = maze[rows - i - 1, j].Left;
+            avstraliezStas[i, j].Up = maze[rows - i - 1, j].Up;
+        }
+
+        return avstraliezStas;
+    }
+
     public static Cell[,] AlgorithmBinaryTrees(int rows, int columns)
     {
         Cell[,] maze = new Cell[rows, columns];

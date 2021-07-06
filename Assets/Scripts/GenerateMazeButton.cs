@@ -86,7 +86,7 @@ public class GenerateMazeButton : MonoBehaviour
                 _layout = GenerateAlgorithms.AlgorithmGrowingForest(rows, columns);
                 break;
             case 10:
-                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
+                _layout = GenerateAlgorithms.AlgorithmEller(rows, columns);
                 break;
             case 11:
                 _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
