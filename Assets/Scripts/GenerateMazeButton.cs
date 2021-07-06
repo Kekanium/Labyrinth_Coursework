@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,17 +12,17 @@ public class GenerateMazeButton : MonoBehaviour
     public GameObject cellPrefab;
     private Cell[,] _layout;
 
-    private GameObject _mainCamera;
+    private Transform _mainCameraTransform;
 
 
     private void Awake()
     {
-        _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        _mainCameraTransform = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
     }
 
     public void Generate()
     {
-        if (inputColumns.text == "" || inputRows.text == "")
+        if (String.IsNullOrEmpty(inputColumns.text) || String.IsNullOrEmpty(inputRows.text))
             return;
         int rows = int.Parse(inputColumns.text);
         int columns = int.Parse(inputRows.text);
@@ -39,7 +40,7 @@ public class GenerateMazeButton : MonoBehaviour
         Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0)); // bottom-left corner
         Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1)); // top-right corner
         float heightCamera = max.y - min.y;
-        float widthCamera = max.x - min.x;
+        //float widthCamera = max.x - min.x;
 
         if (fullSizeX > fullSizeY)
             scaleMaze = heightCamera / fullSizeX;
@@ -47,7 +48,7 @@ public class GenerateMazeButton : MonoBehaviour
             scaleMaze = heightCamera / fullSizeY;
 
 
-        _mainCamera.transform.position = new Vector3(
+        _mainCameraTransform.transform.position = new Vector3(
             (fullSizeX / 2 - (0.96f / 2 + 0.16f)) * scaleMaze,
             (fullSizeY / 2 - (0.96f / 2 + 0.16f)) * scaleMaze,
             -1);
@@ -133,8 +134,12 @@ public class GenerateMazeButton : MonoBehaviour
         {
             if (row == 0 && column == 0)
                 temp.GetComponent<SpriteRenderer>().color = Color.green;
-            if (row == (rows - 1) && column == (columns - 1))
+            else if (row == (rows - 1) && column == (columns - 1))
                 temp.GetComponent<SpriteRenderer>().color = Color.blue;
+            else
+            {
+                temp.GetComponent<SpriteRenderer>().enabled = false;
+            }
         }
 
         if (temp.CompareTag("RightWall") && column != (columns - 1))

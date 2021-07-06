@@ -5,10 +5,11 @@ internal class AutoScaleCamera : MonoBehaviour
 {
     [SerializeField] private bool uniform = true;
     [SerializeField] private bool autoSetUniform = false;
-
+    private Camera _camera;
     private void Awake()
     {
-        GetComponent<Camera>().orthographic = true;
+        _camera = GetComponent<Camera>();
+        _camera.orthographic = true;
 
         if (uniform)
             SetUniform();
@@ -20,8 +21,8 @@ internal class AutoScaleCamera : MonoBehaviour
     }
     private void SetUniform()
     {
-        float orthographicSize = GetComponent<Camera>().pixelHeight/2;
-        if (orthographicSize != GetComponent<Camera>().orthographicSize)
-            GetComponent<Camera>().orthographicSize = orthographicSize;
+        float orthographicSize = _camera.pixelHeight/2;
+        if (orthographicSize != _camera.orthographicSize)
+            _camera.orthographicSize = orthographicSize;
     }
 }
