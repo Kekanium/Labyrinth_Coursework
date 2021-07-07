@@ -2324,29 +2324,21 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: '2: Kruskal''s algorithm'
       m_Image: {fileID: 0}
-    - m_Text: '3: Prim''s algorithm (true)'
+    - m_Text: '3: Aldous-Broder algorithm'
       m_Image: {fileID: 0}
-    - m_Text: '4: Prim''s algorithm (simplified)'
+    - m_Text: '4: Wilson''s algorithm'
       m_Image: {fileID: 0}
-    - m_Text: '5: Prim''s algorithm (modified)'
+    - m_Text: '5: Hunt and kill algorithm'
       m_Image: {fileID: 0}
-    - m_Text: '6: Aldous-Broder algorithm'
+    - m_Text: '6: Growing tree algorithm'
       m_Image: {fileID: 0}
-    - m_Text: '7: Wilson''s algorithm'
+    - m_Text: '7: Growing forest algorithm'
       m_Image: {fileID: 0}
-    - m_Text: '8: Hunt and kill algorithm'
+    - m_Text: '8: Eller''s algorithm'
       m_Image: {fileID: 0}
-    - m_Text: '9: Growing tree algorithm'
+    - m_Text: '9: Binary tree Mazes'
       m_Image: {fileID: 0}
-    - m_Text: '10: Growing forest algorithm'
-      m_Image: {fileID: 0}
-    - m_Text: '11: Eller''s algorithm'
-      m_Image: {fileID: 0}
-    - m_Text: '12: Recursive division'
-      m_Image: {fileID: 0}
-    - m_Text: '13: Binary tree Mazes'
-      m_Image: {fileID: 0}
-    - m_Text: 14:Sidewinder Mazes
+    - m_Text: 10:Sidewinder Mazes
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

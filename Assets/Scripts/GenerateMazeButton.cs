@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,55 +54,109 @@ public class GenerateMazeButton : MonoBehaviour
             (fullSizeY / 2 - (0.96f / 2 + 0.16f)) * scaleMaze,
             -1);
 
-
-        switch (algorithmChoose.value)
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        _layout = algorithmChoose.value switch
         {
-            case 0:
-                _layout = GenerateAlgorithms.AlgorithmRecursiveBacktracker(rows, columns);
-                break;
-            case 1:
-                _layout = GenerateAlgorithms.AlgorithmKruskal(rows, columns);
-                break;
-            case 2:
-                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
-                break;
-            case 3:
-                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
-                break;
-            case 4:
-                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
-                break;
-            case 5:
-                _layout = GenerateAlgorithms.AlgorithmAldousBroder(rows, columns);
-                break;
-            case 6:
-                _layout = GenerateAlgorithms.AlgorithmWilson(rows, columns);
-                break;
-            case 7:
-                _layout = GenerateAlgorithms.AlgorithmHuntKill(rows, columns);
-                break;
-            case 8:
-                _layout = GenerateAlgorithms.AlgorithmGrowingTree(rows, columns);
-                break;
-            case 9:
-                _layout = GenerateAlgorithms.AlgorithmGrowingForest(rows, columns);
-                break;
-            case 10:
-                _layout = GenerateAlgorithms.AlgorithmEller(rows, columns);
-                break;
-            case 11:
-                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
-                break;
-            case 12:
-                _layout = GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns);
-                break;
-            case 13:
-                _layout = GenerateAlgorithms.AlgorithmSidewinder(rows, columns);
-                break;
-        }
-
+            0 => GenerateAlgorithms.AlgorithmRecursiveBacktracker(rows, columns),
+            1 => GenerateAlgorithms.AlgorithmKruskal(rows, columns),
+            2 => GenerateAlgorithms.AlgorithmAldousBroder(rows, columns),
+            3 => GenerateAlgorithms.AlgorithmWilson(rows, columns),
+            4 => GenerateAlgorithms.AlgorithmHuntKill(rows, columns),
+            5 => GenerateAlgorithms.AlgorithmGrowingTree(rows, columns),
+            6 => GenerateAlgorithms.AlgorithmGrowingForest(rows, columns),
+            7 => GenerateAlgorithms.AlgorithmEller(rows, columns),
+            8 => GenerateAlgorithms.AlgorithmBinaryTrees(rows, columns),
+            9 => GenerateAlgorithms.AlgorithmSidewinder(rows, columns)
+        };
+        stopwatch.Stop();
+        print("Creating maze layout: " + stopwatch.Elapsed);
 
         DrawMaze(rows, columns, scaleMaze);
+
+        AnalyzeMaze(_layout, rows, columns);
+    }
+
+    private void AnalyzeMaze(Cell[,] layout, int rows, int columns)
+    {
+        int deadlocks = 0;
+        int Tcrossroads = 0;
+        int crossroads = 0;
+        int turns = 0;
+
+        var IsPassage = new bool[4]; // 0 - left; 1- up; 2 - right; 3- down
+        int tempTurns;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                for (var k = 0; k < IsPassage.Length; k++)
+                    IsPassage[k] = true;
+                tempTurns = 0;
+
+                #region check for Passages
+                //Left wall
+                if (j == 0)
+                    IsPassage[0] = false;
+                else if (layout[i, j].Left)
+                    IsPassage[0] = false;
+                //right wall
+                if (j == (columns - 1))
+                    IsPassage[2] = false;
+                else if (layout[i, j + 1].Left)
+                    IsPassage[2] = false;
+                //up wall
+                if (i == (columns - 1))
+                    IsPassage[1] = false;
+                else if (layout[i, j].Up)
+                    IsPassage[1] = false;
+                //down wall
+                if (i == 0)
+                    IsPassage[3] = false;
+                else if (layout[i - 1, j].Up)
+                    IsPassage[3] = false;
+                #endregion
+
+                #region Count turns
+
+                if (IsPassage[0] && IsPassage[1])
+                    tempTurns++;
+                if (IsPassage[1] && IsPassage[2])
+                    tempTurns++;
+                if (IsPassage[2] && IsPassage[3])
+                    tempTurns++;
+                if (IsPassage[3] && IsPassage[0])
+                    tempTurns++;
+
+                #endregion
+
+                if (tempTurns == 0 &&
+                    ((IsPassage[0] && IsPassage[2]) || (IsPassage[1] && IsPassage[3])))
+                    continue;
+                
+                
+                switch (tempTurns)
+                {
+                    case 0:
+                        deadlocks++;
+                        break;
+                    case 1:
+                        turns++;
+                        break;
+                    case 2:
+                        Tcrossroads++;
+                        break;
+                    case 4:
+                        crossroads++;
+                        break;
+                }
+            }
+        }
+
+        print("deadlocks " + deadlocks);
+        print("turns " + turns);
+        print("Tcrossroads " + Tcrossroads);
+        print("crossroads " + crossroads);
     }
 
     private void DrawMaze(int rows, int columns, float scaleMaze)
